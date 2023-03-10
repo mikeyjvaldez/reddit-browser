@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "reddit-browser",
+    "name": "Reddit Browser",
     "slug": "reddit-browser",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "mikeyv.reddit-browser"
