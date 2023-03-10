@@ -4,7 +4,11 @@ import { ColorTheme } from "../common";
 
 export default function SingleFilterOption({ text, isSelected, onPress }) {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.singleSelectionView}>
+    <TouchableOpacity
+      testID={`single-filter-option${isSelected ? "-selected" : ""}`}
+      onPress={onPress}
+      style={styles.singleSelectionView}
+    >
       <MaterialCommunityIcon
         name={
           isSelected
@@ -14,7 +18,12 @@ export default function SingleFilterOption({ text, isSelected, onPress }) {
         size={18}
         color={isSelected ? ColorTheme.primary : ColorTheme.secondary}
       ></MaterialCommunityIcon>
-      <Text style={styles.singleSelectionText}>{text}</Text>
+      <Text
+        testID={"single-filter-option-text"}
+        style={styles.singleSelectionText}
+      >
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 }

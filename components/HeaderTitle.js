@@ -4,8 +4,14 @@ import { ColorTheme } from "../common";
 export default function HeaderTitle({ title, subtitle }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>{title}</Text>
-      <Text style={styles.subtitleText}>{subtitle}</Text>
+      <Text testID={"header-title"} style={styles.titleText}>
+        {title}
+      </Text>
+      {!!subtitle && (
+        <Text testID={"header-subtitle"} style={styles.subtitleText}>
+          {subtitle}
+        </Text>
+      )}
     </View>
   );
 }

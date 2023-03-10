@@ -35,17 +35,21 @@ export default function ListingItem({ item, onPress }) {
       style={styles.container}
     >
       <FastImage
+        testID={"list-item-thumbnail"}
         style={[styles.thumbnail, { height: item.data.thumbnail_height }]}
         source={{ uri: item.data.thumbnail }}
       ></FastImage>
 
       <View style={styles.bodyView}>
         <View>
-          <Text style={styles.titleText}>{item.data.title}</Text>
+          <Text testID={"list-item-title"} style={styles.titleText}>
+            {item.data.title}
+          </Text>
         </View>
         <View style={styles.awardView}>
           {awardIcons().map((url) => (
             <FastImage
+              testID={"list-item-award-icon-" + url}
               key={item.data.name + "award" + url}
               style={styles.awardImage}
               source={{ uri: url }}
@@ -53,7 +57,7 @@ export default function ListingItem({ item, onPress }) {
           ))}
         </View>
         <View style={styles.userView}>
-          <Text style={styles.userText}>
+          <Text testID={"list-item-user-text"} style={styles.userText}>
             Posted by u/{item.data.author}{" "}
             {formatDistanceToNow(item.data.created_utc * 1000, {
               addSuffix: true,
@@ -66,7 +70,7 @@ export default function ListingItem({ item, onPress }) {
             size={14}
             color={ColorTheme.secondary}
           ></MaterialCommunityIcon>
-          <Text style={styles.metadataText}>
+          <Text testID={"list-item-score-text"} style={styles.metadataText}>
             {formatNumber(item.data.score)}
           </Text>
 
@@ -76,7 +80,10 @@ export default function ListingItem({ item, onPress }) {
               size={14}
               color={ColorTheme.secondary}
             ></MaterialCommunityIcon>
-            <Text style={[styles.metadataText, styles.commentText]}>
+            <Text
+              testID={"list-item-comments-text"}
+              style={[styles.metadataText, styles.commentText]}
+            >
               {formatNumber(item.data.num_comments)}
             </Text>
           </View>
