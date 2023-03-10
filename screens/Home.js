@@ -15,7 +15,8 @@ import HeaderTitle from "../components/HeaderTitle";
 import ListingItem from "../components/ListingItem";
 
 export default function Home({ navigation }) {
-  const { listings, refresh, isRefresh, errorMessage } = useListing();
+  const { listings, refresh, pageNextResults, isRefresh, errorMessage } =
+    useListing();
   const filterContext = useContext(FilterContext);
 
   useEffect(() => {
@@ -55,6 +56,12 @@ export default function Home({ navigation }) {
         onRefresh={() => {
           refresh();
         }}
+        onEndReached={() => {
+          (async () => {
+            await pageNextResults();
+          })();
+        }}
+        onEndReachedThreshold={0.3}
         renderItem={({ item }) => {
           return (
             <ListingItem

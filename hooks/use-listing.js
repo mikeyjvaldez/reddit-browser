@@ -8,11 +8,44 @@ export default function useListing() {
     listings: [],
     errorMessage: "",
     isRefresh: false,
+    nextToken: null,
+    isFetchingNextPage: false,
   });
   const refresh = () => {
     setData((draft) => {
       draft.isRefresh = true;
     });
+  };
+
+  const pageNextResults = async () => {
+    if (data.nextToken && !data.isFetchingNextPage) {
+      setData((draft) => {
+        draft.isFetchingNextPage = true;
+      });
+      try {
+        const response = await fetch(
+          `https://api.reddit.com/r/pics/${filterContext.filterData.listType}.json?after=${data.nextToken}`
+        );
+        const responseData = await response.json();
+        setData((draft) => {
+          if (responseData && responseData.data && responseData.data.children) {
+            draft.listings = [...draft.listings, ...responseData.data.children];
+          }
+          if (responseData && responseData.data && responseData.data.after) {
+            draft.nextToken = responseData.data.after;
+          } else {
+            draft.nextToken = null;
+          }
+          draft.errorMessage = "";
+          draft.isFetchingNextPage = false;
+        });
+      } catch (e) {
+        setData((draft) => {
+          draft.errorMessage = "Failed to fetch posts. Swipe down to refresh.";
+          draft.isFetchingNextPage = false;
+        });
+      }
+    }
   };
   /**
    * Fetch's subreddit posts on initial load and when listType changes from the filter context
@@ -27,6 +60,11 @@ export default function useListing() {
         setData((draft) => {
           if (responseData && responseData.data && responseData.data.children) {
             draft.listings = responseData.data.children;
+          }
+          if (responseData && responseData.data && responseData.data.after) {
+            draft.nextToken = responseData.data.after;
+          } else {
+            draft.nextToken = null;
           }
           draft.errorMessage = "";
         });
@@ -52,6 +90,11 @@ export default function useListing() {
           if (responseData && responseData.data && responseData.data.children) {
             draft.listings = responseData.data.children;
           }
+          if (responseData && responseData.data && responseData.data.after) {
+            draft.nextToken = responseData.data.after;
+          } else {
+            draft.nextToken = null;
+          }
           draft.errorMessage = "";
           draft.isRefresh = false;
         });
@@ -69,5 +112,6 @@ export default function useListing() {
   return {
     ...data,
     refresh,
+    pageNextResults,
   };
 }
